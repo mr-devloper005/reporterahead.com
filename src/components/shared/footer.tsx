@@ -61,17 +61,27 @@ export function Footer() {
   const enabledTasks = SITE_CONFIG.tasks.filter((task) => task.enabled)
   const primaryTask = enabledTasks.find((task) => task.key === recipe.primaryTask) || enabledTasks[0]
 
+  // Custom navigation for Reporterahead
+  const customNavigation = [
+    { name: 'Home', href: '/', key: 'home', label: 'Home', route: '/' },
+    { name: 'Press Releases', href: '/press-releases', key: 'press-releases', label: 'Press Releases', route: '/press-releases' },
+    { name: 'Pricing', href: '/pricing', key: 'pricing', label: 'Pricing', route: '/pricing' },
+    { name: 'About', href: '/about', key: 'about', label: 'About', route: '/about' },
+    { name: 'Blog', href: '/blog', key: 'blog', label: 'Blog', route: '/blog' },
+    { name: 'Contact', href: '/contact', key: 'contact', label: 'Contact', route: '/contact' }
+  ]
+
   if (recipe.footer === 'minimal-footer') {
     return (
-      <footer className="border-t border-[#d7deca] bg-[#f4f6ef] text-[#1f2617]">
+      <footer className="border-t border-[#f0e6dc] bg-[#fef9f5] text-[#51050F]">
         <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-8 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div>
             <p className="text-lg font-semibold">{SITE_CONFIG.name}</p>
-            <p className="mt-1 text-sm text-[#56604b]">{SITE_CONFIG.description}</p>
+            <p className="mt-1 text-sm text-[#AB6D23]">{SITE_CONFIG.description}</p>
           </div>
           <div className="flex flex-wrap gap-3">
             {enabledTasks.slice(0, 5).map((task) => (
-              <Link key={task.key} href={task.route} className="rounded-lg border border-[#d7deca] bg-white px-3 py-2 text-sm font-medium text-[#1f2617] hover:bg-[#ebefdf]">
+              <Link key={task.key} href={task.route} className="rounded-lg border border-[#f0e6dc] bg-white px-3 py-2 text-sm font-medium text-[#51050F] hover:bg-[#fef3e8]">
                 {task.label}
               </Link>
             ))}
@@ -141,22 +151,22 @@ export function Footer() {
 
   if (recipe.footer === 'editorial-footer') {
     return (
-      <footer className="border-t border-[#dbc6b6] bg-[linear-gradient(180deg,#fff9f0_0%,#fff1df_100%)] text-[#2f1d16]">
+      <footer className="border-t border-[#f0e6dc] bg-[linear-gradient(180deg,#fffaf5_0%,#fef3e8_100%)] text-[#51050F]">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr_0.9fr]">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#dbc6b6] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#72594a]">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#e8d4c4] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#AB6D23]">
                 <Sparkles className="h-3.5 w-3.5" />
-                Editorial desk
+                Media Distribution
               </div>
               <h3 className="mt-5 text-3xl font-semibold tracking-[-0.04em]">{SITE_CONFIG.name}</h3>
-              <p className="mt-4 max-w-md text-sm leading-7 text-[#72594a]">{SITE_CONFIG.description}</p>
+              <p className="mt-4 max-w-md text-sm leading-7 text-[#AB6D23]">{SITE_CONFIG.description}</p>
             </div>
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.24em] text-[#8b6d5a]">Sections</h4>
+              <h4 className="text-xs font-semibold uppercase tracking-[0.24em] text-[#8b6d5a]">Services</h4>
               <ul className="mt-4 space-y-3 text-sm">
                 {footerLinks.platform.map((item: any) => (
-                  <li key={item.name}><Link href={item.href} className="hover:text-[#2f1d16]">{item.name}</Link></li>
+                  <li key={item.name}><Link href={item.href} className="hover:text-[#E02401]">{item.name}</Link></li>
                 ))}
               </ul>
             </div>
@@ -164,7 +174,7 @@ export function Footer() {
               <h4 className="text-xs font-semibold uppercase tracking-[0.24em] text-[#8b6d5a]">Company</h4>
               <ul className="mt-4 space-y-3 text-sm">
                 {footerLinks.company.map((item) => (
-                  <li key={item.name}><Link href={item.href} className="hover:text-[#2f1d16]">{item.name}</Link></li>
+                  <li key={item.name}><Link href={item.href} className="hover:text-[#E02401]">{item.name}</Link></li>
                 ))}
               </ul>
             </div>
@@ -175,33 +185,65 @@ export function Footer() {
   }
 
   return (
-    <footer className="border-t border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] text-slate-950">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr_0.8fr]">
-          <div>
+    <footer className="bg-white border-t border-gray-200">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid gap-8 md:grid-cols-4">
+          <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-3">
-              <div className="h-11 w-11 overflow-hidden rounded-2xl border border-slate-200 bg-white p-1 shadow-sm">
-                <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="44" height="44" className="h-full w-full object-contain" />
+              <div className="h-8 w-8">
+                <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="32" height="32" className="h-full w-full object-contain" />
               </div>
-              <div>
-                <span className="block text-lg font-semibold">{SITE_CONFIG.name}</span>
-                <span className="text-xs uppercase tracking-[0.22em] text-slate-500">{siteContent.footer.tagline}</span>
-              </div>
+              <span className="text-xl font-bold text-gray-900">{SITE_CONFIG.name}</span>
             </Link>
-            <p className="mt-5 max-w-sm text-sm leading-7 text-slate-600">{SITE_CONFIG.description}</p>
-          </div>
-          {(['platform', 'company', 'resources', 'legal'] as const).map((section) => (
-            <div key={section}>
-              <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">{section}</h3>
-              <ul className="mt-5 space-y-3 text-sm text-slate-600">
-                {footerLinks[section].map((item: any) => (
-                  <li key={item.name}><Link href={item.href} className="flex items-center gap-2 hover:text-slate-950">{item.icon ? <item.icon className="h-4 w-4" /> : null}{item.name}</Link></li>
-                ))}
-              </ul>
+            <p className="mt-4 text-sm text-gray-600 max-w-md">{SITE_CONFIG.description}</p>
+            <div className="mt-6 flex gap-4">
+              {socialLinks.map((item) => (
+                <Link key={item.name} href={item.href} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#E02401]">
+                  <item.icon className="h-5 w-5" />
+                </Link>
+              ))}
             </div>
-          ))}
+          </div>
+          
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 mb-4">Product</h3>
+            <ul className="space-y-3 text-sm">
+              {customNavigation.slice(1).map((item) => (
+                <li key={item.key}>
+                  <Link href={item.href} className="text-gray-600 hover:text-[#E02401] transition-colors">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 mb-4">Company</h3>
+            <ul className="space-y-3 text-sm">
+              {footerLinks.company.map((item) => (
+                <li key={item.name}>
+                  <Link href={item.href} className="text-gray-600 hover:text-[#E02401] transition-colors">
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className="mt-12 border-t border-slate-200 pt-6 text-center text-sm text-slate-500">&copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.</div>
+        
+        <div className="mt-12 pt-8 border-t border-gray-200">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-sm text-gray-600">&copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.</p>
+            <div className="flex gap-6 text-sm">
+              {footerLinks.legal.map((item) => (
+                <Link key={item.name} href={item.href} className="text-gray-600 hover:text-[#E02401] transition-colors">
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </footer>
   )
