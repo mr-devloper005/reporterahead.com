@@ -1,39 +1,155 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { Search } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { Search, Menu, X } from 'lucide-react'
 import { SITE_CONFIG } from '@/lib/site-config'
+import { siteIdentity } from '@/config/site.identity'
+import { cn } from '@/lib/utils'
 
 export const NAVBAR_OVERRIDE_ENABLED = true
 
-const utilityLinks = [
-  { label: 'About Us', href: '/about' },
-  { label: 'Terms of Service', href: '/terms' },
-  { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Contact Us', href: '/contact' },
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'Press releases', href: '/press-releases' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 export function NavbarOverride() {
+  const pathname = usePathname()
+  const [mobileOpen, setMobileOpen] = useState(false)
+
   return (
-    <header className="border-b border-neutral-200 bg-white text-neutral-800">
-      <div className="border-b border-neutral-200 bg-neutral-50">
-        <div className="mx-auto flex max-w-6xl flex-wrap gap-x-4 gap-y-1 px-4 py-3 text-[13px] sm:px-6">
-          {utilityLinks.map((item) => (
-            <Link key={item.label} href={item.href} className="hover:text-black">{item.label}</Link>
-          ))}
-        </div>
+    <header className="sticky top-0 z-50 w-full">
+      {/* Top announcement bar — brand red */}
+      <div className="bg-[#E02401] px-4 py-2 text-center text-sm font-medium text-white/90">
+        {siteIdentity.tagline}&nbsp;·&nbsp;Media intelligence
       </div>
-      <div className="mx-auto max-w-6xl px-4 py-8 text-center sm:px-6">
-        <Link href="/" className="text-5xl font-black uppercase tracking-[0.18em] text-black sm:text-6xl" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
-          {SITE_CONFIG.name}
-        </Link>
-      </div>
-      <div className="border-t border-neutral-200">
-        <div className="mx-auto flex max-w-6xl items-center justify-center gap-6 px-4 py-4 text-sm uppercase tracking-[0.08em] sm:px-6">
-          <Link href="/" className="text-[#4a90ff]">Home</Link>
-          <Link href="/contact" className="hover:text-black">Contact</Link>
-          <Link href="/search" className="hover:text-black"><Search className="h-4 w-4" /></Link>
+
+      {/* Main nav bar — white */}
+      <div className="border-b border-gray-200 bg-white shadow-sm">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+
+          {/* Logo */}
+          <Link href="/" className="flex shrink-0 items-center gap-2.5">
+            <div className="leading-tight">
+              <span className="block text-[15px] font-bold uppercase tracking-wide text-gray-900">
+                {SITE_CONFIG.name}
+              </span>
+              <span className="block text-[10px] uppercase tracking-widest text-gray-400">
+                {siteIdentity.domain}
+              </span>
+            </div>
+          </Link>
+
+          {/* Desktop nav links */}
+          <nav className="hidden items-center gap-1 lg:flex">
+            {navLinks.map((link) => {
+              const isActive =
+                link.href === '/'
+                  ? pathname === '/'
+                  : pathname.startsWith(link.href)
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    'rounded-full px-4 py-2 text-sm font-medium transition-colors',
+                    isActive
+                      ? 'bg-[#E02401] text-white'
+                      : 'text-gray-700 hover:bg-red-50 hover:text-[#E02401]'
+                  )}
+                >
+                  {link.label}
+                </Link>
+              )
+            })}
+          </nav>
+
+          {/* Right side: search + CTAs */}
+          <div className="flex items-center gap-2">
+            {/* Search icon */}
+            <Link
+              href="/search"
+              className="hidden rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 sm:flex"
+              aria-label="Search"
+            >
+              <Search className="h-4 w-4" />
+            </Link>
+
+            {/* CTA buttons */}
+            <div className="hidden items-center gap-2 md:flex">
+              <Link
+                href="/press-releases"
+                className="rounded-full bg-[#E02401] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#C01E01]"
+              >
+                Press releases
+              </Link>
+              <Link
+                href="/pricing"
+                className="rounded-full border border-[#E02401] bg-white px-4 py-2 text-sm font-semibold text-[#E02401] transition-colors hover:bg-red-50"
+              >
+                Request demo
+              </Link>
+            </div>
+
+            {/* Mobile menu toggle */}
+            <button
+              className="rounded-full p-2 text-gray-600 hover:bg-gray-100 lg:hidden"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile menu */}
+        {mobileOpen && (
+          <div className="border-t border-gray-200 bg-white px-4 pb-4 pt-2 lg:hidden">
+            <nav className="flex flex-col gap-1">
+              {navLinks.map((link) => {
+                const isActive =
+                  link.href === '/'
+                    ? pathname === '/'
+                    : pathname.startsWith(link.href)
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={cn(
+                      'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                      isActive
+                        ? 'bg-[#E02401] text-white'
+                        : 'text-gray-700 hover:bg-red-50 hover:text-[#E02401]'
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              })}
+            </nav>
+            <div className="mt-4 flex flex-col gap-2 border-t border-gray-200 pt-4">
+              <Link
+                href="/press-releases"
+                onClick={() => setMobileOpen(false)}
+                className="rounded-full bg-[#E02401] px-4 py-2 text-center text-sm font-semibold text-white hover:bg-[#C01E01]"
+              >
+                Press releases
+              </Link>
+              <Link
+                href="/pricing"
+                onClick={() => setMobileOpen(false)}
+                className="rounded-full border border-[#E02401] px-4 py-2 text-center text-sm font-semibold text-[#E02401] hover:bg-red-50"
+              >
+                Request demo
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   )
